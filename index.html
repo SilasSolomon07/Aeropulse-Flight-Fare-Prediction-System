@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Fare Prediction</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            background-color: rgba(7,92,149,255);
+        }
+        nav {
+            background-color: rgba(7,92,149,255);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between; /* Align items horizontally */
+            align-items: center; /* Align items vertically */
+        }
+        nav .logo {
+            font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif ;
+            font-weight:100;
+            font-size: 40px;
+            margin-left: 20px; /* Adjust the margin as needed */
+        }   
+        nav .items{
+            margin: auto;
+            width: 30%;
+            padding: 5px;
+            margin-left: 20rem;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px; /* Reduced margin between navigation links */
+            font-weight: bold;
+        }
+        .banner-image {
+            position: absolute;
+            margin: 6rem auto;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            object-fit: cover;
+        }
+        .container {
+            margin-top: 150px; /* Adjusted margin top to move the container downwards */
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            max-width: 500px;
+            margin: 6rem auto;
+            border-radius: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+        }
+        select, input[type="text"], input[type="submit"] {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <script>
+        $(function() {
+            $("#date").datepicker({
+                dateFormat: "dd/mm/yy"
+            });
+        });
+        window.onload = function() {
+            document.getElementById("airline").selectedIndex = 0;
+            document.getElementById("source").selectedIndex = 0;
+            document.getElementById("destination").selectedIndex = 0;
+            document.getElementById("date").value = '';
+            document.getElementById("stops").selectedIndex = 0;
+        };
+    </script>
+</head>
+<body>
+    <nav>
+        <div class="logo">Aeropulse</div>
+        <div class="items"><a href="#home">Home</a>
+        <!--<a href="/analysis.html">Analysis</a></div>-->
+    </nav>
+    <img src="/static/flight1.jpg" alt="flight image" class="banner-image">
+    <div class="container">
+        <h1>Flight Fare Prediction</h1>
+        <form action="/predict" method="post">
+            <label for="airline">Airline:</label>
+            <select id="airline" name="airline" required>
+                <option value="" selected disabled>Select an airline</option>
+                <option value="Jet Airways">Jet Airways</option>
+                <!--<option value="Indigo">Indigo</option>-->
+                <option value="Air India">Air India</option>
+                <option value="SpiceJet">SpiceJet</option>
+                <option value="Vistara">Vistara</option>
+                <option value="GoAir">GoAir</option>
+                <option value="Trujet">Trujet</option>
+                <option value="Vistara Premium economy">Vistara Premium economy</option>
+                <option value="Jet Airways Business">Jet Airways Business</option>
+                <option value="Multiple carriers">Multiple carriers</option>
+                <option value="Multiple carriers Premium economy">Multiple carriers Premium economy</option>
+            </select>
+            
+            <label for="source">From:</label>
+            <select id="source" name="source" required>
+                <option value="" selected disabled>Select a source</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Kolkata">Kolkata</option>
+                <option value="Banglore">Banglore</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Chennai">Chennai</option>
+            </select>
+            
+            <label for="destination">To:</label>
+            <select id="destination" name="destination" required>
+                <option value="" selected disabled>Select a destination</option>
+                <option value="Cochin">Cochin</option>
+                <option value="Banglore">Banglore</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Kolkata">Kolkata</option>
+            </select>
+            
+            <label for="date">Departure Date:</label>
+            <input type="text" id="date" name="date" required>
+            
+            <label for="stops">Stopage:</label>
+            <select id="stops" name="stops" required>
+                <option value="" selected disabled>Select the number of stops</option>
+                <option value="Non-stop">Non-stop</option>
+                <option value="1 Stop">1 stop</option>
+                <option value="2 Stops">2 stops</option>
+                <option value="3 Stops">3 stops</option>
+                <option value="4 Stops">4 stops</option>
+            </select>
+            
+            <input type="submit" value="Predict Fare">
+        </form>
+        
+        {% if prediction_text %}
+            <h2>{{ prediction_text }}</h2>
+        {% endif %}
+    </div>
+</body>
+</html>
+
+
